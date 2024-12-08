@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员-图书管理系统</title>
+    <link href="/layui/css/layui.css" rel="stylesheet"/>
+    <link href="/css/project.css" rel="stylesheet"/>
+
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+
+    <footer th:fragment="header">
+        <div class="layui-header">
+            <div class=" layui-nav " style="font-size: x-large; color: #009688;line-height: 60px;">Library Management</div>
+        </div>
+    </footer>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航 -->
+            <ul class="layui-nav layui-nav-tree">
+
+                <li class="layui-nav-item ">
+                    <a class="" href="javascript:;">Book Management</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/addBookPage">&emsp;&emsp;Add New Book</a></dd>
+                        <dd><a href="/addAuthorPage">&emsp;&emsp;Add New Author</a></dd>
+                        <dd><a href="/addCopyPage">&emsp;&emsp;Add New Copy</a></dd>
+                        <dd><a href="/removeCopyPage">&emsp;&emsp;Remove Copy</a></dd>
+                        <dd><a href="/findBookPage">&emsp;&emsp;Search Book</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;">Customer Management</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/addCustomerPage">&emsp;&emsp;Add New Customer</a></dd>
+                        <dd><a href="/customerDetails">&emsp;&emsp;Search Customer</a></dd>
+                        <dd><a href="/recordPaymentPage">&emsp;&emsp;Record Payment</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item ">
+                    <a class="" href="javascript:;">Rent & Return</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/addRentalPage">&emsp;&emsp;Add Rental</a></dd>
+                        <dd><a href="/returnPage">&emsp;&emsp;Return Book</a></dd>
+                        <dd><a href="/findBookWaitingListPage">&emsp;&emsp;Add Waiting List</a></dd>
+                    </dl>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+
+<!--    Add customer form-->
+    <div style="margin : 30px auto; padding:40px 16px ;border: 200px; width: 400px; height: 550px; background-color: #f2f2f2"
+         class="layui-container">
+
+        <hr class="layui-bg-blue">
+        <h1 style="text-align:center">Add New Customer</h1>
+        <hr class="layui-bg-blue" style="margin-bottom: 40px">
+
+        <form class="layui-form" id="addUserForm" action="/addCustomer" method="post">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">Name</label>
+                <input type="text" class="layui-input layui-input-inline" id="userName" autocomplete="off" autofocus
+                       name="customerName" lay-verify="required"
+                       placeholder="Enter the name"><br><br>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">Date of Birth</label>
+                <input class="layui-input layui-input-inline" type="date" id="date"
+                       lay-verify="required" name="customerDateOfBirth">
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">Email</label>
+                <input class="layui-input layui-input-inline" type="text"
+                       id="email" name="customerEmail" placeholder="Enter the email address">
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">Address</label>
+                <input type="text" class="layui-input layui-input-inline" id="address" autocomplete="off" autofocus
+                       name="customerAddress" lay-verify="required"
+                       placeholder="Enter the address"><br><br>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">Max Rentals</label>
+                <input class="layui-input layui-input-inline" type="text"
+                       id="rental" name="customerMaxRentals" placeholder="Enter the max rental amount">
+            </div>
+
+            <div style="margin-left: 120px">
+                <input class="layui-btn layui-btn-radius" lay-filter="btn_addUser"
+                       id="btn_addUser" type="submit" lay-submit="" value="Submit">
+            </div>
+        </form>
+    </div>
+
+    <div class="res">
+        <div class="layui-body" th:if="${customerName != null}">
+
+            <div class="layui-container" style="top: 600px; z-index: -10">
+                <hr class="layui-bg-blue">
+                <h3 style="color: #4ff64f; text-align: center; font-size: xx-large">Add Customer Successfully</h3>
+                <hr class="layui-bg-blue">
+                <table class="layui-table ">
+                    <thead>
+                    <tr>
+                        <th>Customer</th>
+                        <th>Date of Birth</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Max Rental</th>
+                    </tr>
+                    </thead>
+
+                    <tr>
+                        <td th:text = "${customerName}"></td>
+                        <td th:text = "${thisCustomer.getDateOfBirth()}"></td>
+                        <td th:text = "${thisCustomer.getEmail()}"></td>
+                        <td th:text = "${thisCustomer.getAddress()}"></td>
+                        <td th:text = "${thisCustomer.getMaxRentals()}"></td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+<script src="/scripts/jquery.min.js"></script>
+<script src="/layui/layui.js"></script>
+<!--<script src="/scripts/admin/addUser.js"></script>-->
+<script>
+
+    layui.use(['carousel', 'element'], function () {
+        let carousel = layui.carousel;
+        let element = layui.element;
+
+        //建造实例
+        carousel.render({
+            elem: '#index'
+            , width: '900' //设置容器宽度
+            , height: '550px' //设置容器高度
+            // , full:'true' //是否全屏轮播,默认false
+            // , arrow: 'always' //始终显示箭头和点击按钮
+            // ,anim: 'updown' //切换动画方式，可从各个方向滚动
+        });
+    });
+
+</script>
+</body>
+</html>

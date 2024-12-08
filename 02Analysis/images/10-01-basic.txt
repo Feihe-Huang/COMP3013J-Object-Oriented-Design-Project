@@ -1,0 +1,33 @@
+title Find Book - Basic course of events
+actor Librarian
+control " : ManagementSystem" as ms
+participant " : LibraryManagement" as l
+entity "searched : Book" as b
+
+Librarian->ms:findBook(details)
+activate ms
+
+ms->l:searchBook(details)
+activate l
+
+loop for all books in system
+	l->b:getDetails()
+   activate b
+
+alt if details == getDetails()
+	b-->l:return book
+    else else
+end
+end
+   deactivate b
+end
+
+l-->ms:return data
+deactivate l
+
+
+
+ms->ms:updateDisplay()
+
+ms-->Librarian:
+deactivate ms

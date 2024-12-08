@@ -1,0 +1,57 @@
+title Pay Fees - Basic Course of Events
+actor "Librarian " as u
+
+boundary " : View " as v
+entity "model : Model" as m
+boundary "newView : View " as nv
+
+boundary " : DispatchServlet" as d
+
+participant " : CustomerRepository" as cr
+participant " : BookCopyRepository" as bcr
+participant " : BookRentalRepository" as rrr
+
+control " : LibrarySystem" as ls
+control " : LibraryService" as l
+
+
+entity "customer : Customer" as c
+entity "copy : BookCopy" as bc
+
+entity "newRental : RentalRecord" as rr
+
+u->v:click()
+activate v
+v->d:submitPayment(customerId : String, paymentAmount : String)
+
+deactivate v
+
+activate d
+
+d->ls:addPayment(customerId : String, paymentAmount : String, model : Model)
+activate ls
+
+ls->l:addPayment(customerId : Long, paymentAmount : Integer)
+activate l
+
+l->cr:customer := findById(customerId : Long)
+l->c: currentFees := getLateFees()
+l->c: setLateFees(newLateFee : Integer)
+l-->ls:return customer
+deactivate l
+
+ls->c: rentalRecord := getRentalRecord()
+ls->m:addAttribute(name : String, customer : Customer)
+ls->m:addAttribute(name : String, rentalRecord : BookRental[*])
+
+ls-->d:return viewName
+deactivate ls
+
+d->*nv:View(model : Model)
+activate nv
+
+nv-->d:
+deactivate nv
+
+d-->u: revurn newView
+deactivate d

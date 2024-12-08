@@ -1,0 +1,40 @@
+title Return Book - Basic course of events
+actor Librarian
+control " : ManagementSystem" as Ms
+participant " : RentManagement" as r
+entity "r : Rent" as b
+entity "c : Copy" as c
+
+
+Librarian->Ms:returnBook(details)
+activate Ms
+
+
+// modify deleteRent()
+Ms->r:deleteRent(details)
+activate r
+
+
+r->r:c:= searchCopy(copyID)
+r->r:r:= searchRent(customerID, copyID)
+
+r->c:changeCondition(false)
+activate c
+c-->r:
+deactivate c
+
+r->b:returnBook( )
+activate b
+
+b-->r:return details
+deactivate b
+
+
+
+r-->Ms:return customerAccount, rentalDetails
+deactivate r
+
+Ms->Ms:updateDisplay()
+
+Ms-->Librarian:
+deactivate Ms

@@ -1,0 +1,64 @@
+title Find Customer - Basic Course of Events
+actor "Librarian " as u
+
+boundary ": View " as v
+entity "model : Model" as m
+entity "newModel : Model" as nm
+boundary "newView : View " as nv
+boundary "newnewView : View " as nnv
+
+boundary ":DispatchServlet" as d
+
+participant " : CustomerRepository" as cr
+
+control " : LibrarySystem" as ls
+control " : LibraryService" as l
+
+
+entity "c : Customer" as c
+
+
+u->v:click()
+activate v
+v->d:submitCustomerSearch(text : String)
+
+deactivate v
+
+activate d
+
+d->ls:findCustomer(text : String, model : Model)
+activate ls
+
+ls->l:findCustomer(text : String)
+activate l
+
+opt if the text contains a number
+	l->cr:c1 := findById(id : Long)
+end
+
+l->cr:c2 := findByEmail(text : String)
+
+l->cr:customers1 := findAllByName(text : String)
+
+l->cr:customers2 := findAllByAddress(text : String)
+
+note over l: All returned customer objects added to a single list
+
+
+l-->ls:return customerList
+deactivate l
+
+ls->m:addAttribute(name : String, customerList : Customer[*])
+
+
+ls-->d:return viewName
+deactivate ls
+
+d->*nv:View(model : Model)
+activate nv
+
+nv-->d:
+deactivate nv
+
+d-->u: revurn newView
+deactivate d

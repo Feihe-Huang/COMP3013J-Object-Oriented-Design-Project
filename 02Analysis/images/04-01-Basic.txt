@@ -1,0 +1,61 @@
+title View Customer Details - Basic course of events
+actor Librarian
+control " : ManagementSystem" as ms
+participant " : AccountManagement" as l
+entity "searched : Customer" as c
+
+Librarian->ms:findCustomer(details)
+activate ms
+
+ms->l:searchCustomer(details)
+activate l
+
+loop for all customers in system
+
+l->c:getDetails()
+   activate c
+   
+alt if details == getDetails()
+	
+   c-->l: return customer
+   else else 
+
+   end
+   end
+   deactivate c
+
+l-->ms:return data
+deactivate l
+
+
+
+
+ms->ms:updateDisplay()
+
+ms-->Librarian:
+
+
+
+ms->Librarian:selectCustomer(details)
+
+activate Librarian
+
+
+ms<--Librarian: customer
+deactivate Librarian
+
+ms->l:checkDetails(customerID)
+activate l
+
+l-->ms: return data
+deactivate l
+
+ms->ms:updateDisplay()
+
+ms-->Librarian:
+
+deactivate ms
+
+
+
+

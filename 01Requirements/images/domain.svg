@@ -1,0 +1,144 @@
+<svg version="1.1" baseProfile="full" width="591.0" height="335.0" viewbox="0 0 591 335" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events">
+	<desc >#direction: right
+	[Book|title;isbnNumber;section;shelf]
+	[Author|name]
+	[Customer|name;email;address;dateOfBirth;maxRentals;lateFees]
+	[BookCopy|id]
+	[BookRental|checkOutDate; returnDate; lateFees]
+	
+	[Book]-&gt;*[Author]
+	[Author]-&gt;*[Book]
+	[BookCopy]-&gt;1[Book]
+	[Customer]-&gt;*[BookRental]
+	[BookRental]-&gt;1[BookCopy]
+	[Book]-&gt;*[Customer]</desc>
+	<g stroke-width="1.0" text-align="left" font="12pt Helvetica, Arial, sans-serif" font-size="12pt" font-family="Helvetica" font-weight="normal" font-style="normal">
+		<g transform="translate(0.5, 0.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" stroke-width="3.0" stroke-linejoin="round" stroke-linecap="round" stroke="#33322E">
+			<g stroke="transparent" fill="transparent">
+				<rect x="0.0" y="0.0" height="335.0" width="591.0" stroke="none"></rect>
+			</g>
+			<g transform="translate(8, 8)" fill="#33322E">
+				<g transform="translate(20, 20)" fill="#33322E" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal">
+					<text x="166.0" y="13.3" stroke="none">*</text>
+					<path d="M78.2 97.0 L122 11 L151.58984034906118 19.454240099731766 L151.6 19.5 " fill="none"></path>
+					<path d="M143.7 22.8 L151.6 19.5 L146.6 12.5 L158.0 21.3 Z"></path>
+					<text x="87.8" y="92.4" stroke="none">*</text>
+					<path d="M158.0 55.2 L122 80.75 L106.75572307512746 95.7258917677445 L106.8 95.7 " fill="none"></path>
+					<path d="M107.8 87.2 L106.8 95.7 L115.2 94.9 L102.0 100.4 Z"></path>
+					<text x="63.7" y="224.0" stroke="none">1</text>
+					<path d="M448.1 255.8 L419 279 L340.5 279 L340.5 279 L262 279 L262 279 L192 279 L192 279 L122 279 L122 279 L83.78442763762993 209.8351964990908 L83.8 209.8 " fill="none"></path>
+					<path d="M91.7 213.1 L83.8 209.8 L82.3 218.2 L80.6 204.0 Z"></path>
+					<text x="267.8" y="162.5" stroke="none">*</text>
+					<path d="M242.0 170.5 L262 170.5 L275.3333333333333 170.5 L275.3 170.5 " fill="none"></path>
+					<path d="M268.7 175.8 L275.3 170.5 L268.7 165.2 L282.0 170.5 Z"></path>
+					<text x="456.1" y="185.8" stroke="none">1</text>
+					<path d="M399.0 170.5 L419 170.5 L442.9314621287152 189.59237971298234 L442.9 189.6 " fill="none"></path>
+					<path d="M434.4 189.6 L442.9 189.6 L441.0 181.3 L448.1 193.8 Z"></path>
+					<text x="127.8" y="190.5" stroke="none">*</text>
+					<path d="M102.0 164.9 L122 170.5 L135.33333333333334 170.5 L135.3 170.5 " fill="none"></path>
+					<path d="M128.7 175.8 L135.3 170.5 L128.7 165.2 L142.0 170.5 Z"></path>
+					<g data-name="Book">
+						<g fill="#eee8d5" stroke="#33322E" data-name="Book">
+							<rect x="0.0" y="97.0" height="107.0" width="102.0" data-name="Book"></rect>
+							<path d="M0.0 128.0 L102.0 128.0" fill="none" data-name="Book"></path>
+						</g>
+						<g transform="translate(0, 97)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Book">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Book">
+								<text x="43.0" y="13.5" stroke="none" text-anchor="middle" data-name="Book">Book</text>
+								
+							</g>
+						</g>
+						<g transform="translate(0, 128)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Book">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Book">
+								<text x="0.0" y="13.5" stroke="none" data-name="Book">title</text>
+								<text x="0.0" y="28.5" stroke="none" data-name="Book">isbnNumber</text>
+								<text x="0.0" y="43.5" stroke="none" data-name="Book">section</text>
+								<text x="0.0" y="58.5" stroke="none" data-name="Book">shelf</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="Author">
+						<g fill="#eee8d5" stroke="#33322E" data-name="Author">
+							<rect x="158.0" y="0.0" height="62.0" width="68.0" data-name="Author"></rect>
+							<path d="M158.0 31.0 L226.0 31.0" fill="none" data-name="Author"></path>
+						</g>
+						<g transform="translate(158, 0)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Author">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Author">
+								<text x="26.0" y="13.5" stroke="none" text-anchor="middle" data-name="Author">Author</text>
+								
+							</g>
+						</g>
+						<g transform="translate(158, 31)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Author">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Author">
+								<text x="0.0" y="13.5" stroke="none" data-name="Author">name</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="Customer">
+						<g fill="#eee8d5" stroke="#33322E" data-name="Customer">
+							<rect x="142.0" y="102.0" height="137.0" width="100.0" data-name="Customer"></rect>
+							<path d="M142.0 133.0 L242.0 133.0" fill="none" data-name="Customer"></path>
+						</g>
+						<g transform="translate(142, 102)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Customer">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Customer">
+								<text x="42.0" y="13.5" stroke="none" text-anchor="middle" data-name="Customer">Customer</text>
+								
+							</g>
+						</g>
+						<g transform="translate(142, 133)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Customer">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Customer">
+								<text x="0.0" y="13.5" stroke="none" data-name="Customer">name</text>
+								<text x="0.0" y="28.5" stroke="none" data-name="Customer">email</text>
+								<text x="0.0" y="43.5" stroke="none" data-name="Customer">address</text>
+								<text x="0.0" y="58.5" stroke="none" data-name="Customer">dateOfBirth</text>
+								<text x="0.0" y="73.5" stroke="none" data-name="Customer">maxRentals</text>
+								<text x="0.0" y="88.5" stroke="none" data-name="Customer">lateFees</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="BookCopy">
+						<g fill="#eee8d5" stroke="#33322E" data-name="BookCopy">
+							<rect x="439.0" y="194.0" height="62.0" width="96.0" data-name="BookCopy"></rect>
+							<path d="M439.0 225.0 L535.0 225.0" fill="none" data-name="BookCopy"></path>
+						</g>
+						<g transform="translate(439, 194)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="BookCopy">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="BookCopy">
+								<text x="40.0" y="13.5" stroke="none" text-anchor="middle" data-name="BookCopy">BookCopy</text>
+								
+							</g>
+						</g>
+						<g transform="translate(439, 225)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BookCopy">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="BookCopy">
+								<text x="0.0" y="13.5" stroke="none" data-name="BookCopy">id</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="BookRental">
+						<g fill="#eee8d5" stroke="#33322E" data-name="BookRental">
+							<rect x="282.0" y="125.0" height="92.0" width="117.0" data-name="BookRental"></rect>
+							<path d="M282.0 156.0 L399.0 156.0" fill="none" data-name="BookRental"></path>
+						</g>
+						<g transform="translate(282, 125)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="BookRental">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="BookRental">
+								<text x="50.5" y="13.5" stroke="none" text-anchor="middle" data-name="BookRental">BookRental</text>
+								
+							</g>
+						</g>
+						<g transform="translate(282, 156)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BookRental">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="BookRental">
+								<text x="0.0" y="13.5" stroke="none" data-name="BookRental">checkOutDate</text>
+								<text x="0.0" y="28.5" stroke="none" data-name="BookRental">returnDate</text>
+								<text x="0.0" y="43.5" stroke="none" data-name="BookRental">lateFees</text>
+								
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>

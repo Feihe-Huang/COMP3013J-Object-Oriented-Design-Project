@@ -1,0 +1,26 @@
+title Remove Book Copy - Basic course of events
+actor Librarian
+control " : ManagementSystem" as ms
+participant " : LibraryManagement" as l
+entity "chosen : Copy" as copy
+
+Librarian->ms:removeCopy(id)
+activate ms
+
+ms-->Librarian:getPermission()
+
+Librarian->ms:confirmRemove()
+
+ms->l:removeCopy(chosen)
+activate l
+
+l->copy:<<destroy>>
+destroy copy
+
+l-->ms:
+deactivate l
+
+ms->ms:updateDisplay()
+
+ms-->Librarian:
+deactivate ms

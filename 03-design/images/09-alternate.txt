@@ -1,0 +1,26 @@
+title Remove Book Copy - Basic Course of Events
+actor "Librarian " as u
+
+boundary " : View " as v
+entity "model : Model" as m
+boundary "newView : View " as nv
+
+boundary " : DispatchServlet" as d
+
+participant " : BookRepository" as br
+participant " : BookCopyRepository" as bcr
+
+control " : LibrarySystem" as ls
+control " : LibraryService" as l
+
+entity "bookCopy : BookCopy" as bc
+
+
+u->v:click()
+activate v
+v->u:dialog is displayed with confirm and cancel options
+activate u
+u-->v:return false
+deactivate u
+v-->u:
+deactivate v

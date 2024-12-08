@@ -1,0 +1,64 @@
+title Add Book - Basic Course of Events
+actor "Librarian " as u
+
+boundary ": View " as v
+entity "model : Model" as m
+boundary "newView : View " as nv
+boundary ":DispatchServlet" as d
+
+participant " : AuthorRepository" as ar
+participant " : BookRepository" as br
+
+control " : LibrarySystem" as ls
+control " : LibraryService" as l
+
+
+entity ": Book" as b
+entity ": Author" as a
+
+
+u->v:click()
+activate v
+v->d:submitBook(title : String, authors : String, ISBN : String, section : String, shelf: String)
+
+deactivate v
+
+activate d
+
+d->ls:addBook(title : String, authors : String, ISBN : String, section : String, shelf: String, model : Model)
+activate ls
+
+ls->l:getBook(ISBN : String, authors : String, ISBN : String, section : String, shelf: String)
+activate l
+l->br:b := findByIsbnNumber(ISBN : String)
+
+opt if b is null
+  loop for each author name in the string
+      l->l:getAuthor(authorName : String)
+  end
+  note over l: Author objects are added to a list named authorList
+  l->*b:Book(title: String, ISBN : String, authorList : Author[*], section : String, shelf : String)
+  activate b
+  
+  b-->l:
+  deactivate b
+  l->br:save(b : Book)
+end
+
+l-->ls:return b
+deactivate l
+
+ls->m:addAttribute(name : String, message : String)
+
+
+ls-->d:return viewName
+deactivate ls
+
+d->*nv:View(model : Model)
+activate nv
+
+nv-->d:
+deactivate nv
+
+d-->u: revurn newView
+deactivate d

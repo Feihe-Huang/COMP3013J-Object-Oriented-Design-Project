@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
+</head>
+<body class="layui-layout layui-layout-admin">
+
+<footer th:fragment="header">
+    <div class="layui-header">
+        <div class=" layui-nav " style="font-size: x-large; color: #009688;line-height: 60px;">Library Management</div>
+    </div>
+</footer>
+
+
+<div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+        <!-- 左侧导航 -->
+        <ul class="layui-nav layui-nav-tree">
+
+            <li class="layui-nav-item ">
+                <a class="" href="javascript:;">Book Management</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/addBookPage">&emsp;&emsp;Add New Book</a></dd>
+                    <dd><a href="/addAuthorPage">&emsp;&emsp;Add New Author</a></dd>
+                    <dd><a href="/addCopyPage">&emsp;&emsp;Add New Copy</a></dd>
+                    <dd><a href="/removeCopyPage">&emsp;&emsp;Remove Copy</a></dd>
+                    <dd><a href="/findBookPage">&emsp;&emsp;Search Book</a></dd>
+                </dl>
+            </li>
+
+            <li class="layui-nav-item">
+                <a class="" href="javascript:;">Customer Management</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/addCustomerPage">&emsp;&emsp;Add New Customer</a></dd>
+                    <dd><a href="/customerDetails">&emsp;&emsp;Search Customer</a></dd>
+                    <dd><a href="/recordPaymentPage">&emsp;&emsp;Record Payment</a></dd>
+                </dl>
+            </li>
+
+            <li class="layui-nav-item ">
+                <a class="" href="javascript:;">Rent & Return</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/addRentalPage">&emsp;&emsp;Add Rental</a></dd>
+                    <dd><a href="/returnPage">&emsp;&emsp;Return Book</a></dd>
+                    <dd><a href="/findBookWaitingListPage">&emsp;&emsp;Add Waiting List</a></dd>
+                </dl>
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+
+<!--<h1>Record Payment</h1>-->
+<!--<form method="post" action = "/recordPayment">-->
+<!--    <p>Enter Customer ID</p>-->
+<!--    <input type = "text" name = "customerId">-->
+<!--    <p>Enter the amount of the payment</p>-->
+<!--    <input type = "text" name = "payment">-->
+<!--    <br>-->
+<!--    <input type = "submit">-->
+<!--</form>-->
+<div style="margin : 10px auto; padding:40px 16px ;border: 200px; width: 400px; height: 350px; background-color: #f2f2f2"
+     class="layui-container">
+
+    <hr class="layui-bg-blue">
+    <h1 style="text-align:center">Add New Payment</h1>
+    <hr class="layui-bg-blue" style="margin-bottom: 40px">
+
+    <form class="layui-form" id="addUserForm" action="/recordPayment" method="post">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">Enter Customer ID</label>
+            <input type="text" class="layui-input layui-input-inline" id="userName" autocomplete="off" autofocus
+                   name="customerId" lay-verify="required"
+                   placeholder="Enter the name"><br><br>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">Payment Amount</label>
+            <input class="layui-input layui-input-inline" type="text" id="date"
+                   lay-verify="required" name="payment">
+        </div>
+
+        <div style="margin-left: 120px">
+            <input class="layui-btn layui-btn-radius" lay-filter="btn_addUser"
+                   id="btn_addUser" type="submit" lay-submit="" value="Submit">
+        </div>
+    </form>
+</div>
+
+
+<!-- Customer details -->
+<div th:if="${name != null}">
+    <div class="layui-body" >
+        <div class="layui-container" style="top: 400px; z-index: -10">
+            <hr class="layui-bg-blue">
+            <h4 style="color: #151515; text-align: center; font-size: xx-large">Customer Details</h4>
+            <hr class="layui-bg-blue">
+            <table class="layui-table ">
+                <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Fees Due</th>
+                    <th>Date of Birth</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                </tr>
+                </thead>
+
+                <tr>
+                    <td th:text = "${thisCustomer.getName()}"></td>
+                    <td th:text = "${thisCustomer.getLateFees()}"></td>
+                    <td th:text = "${thisCustomer.getDateOfBirth()}"></td>
+                    <td th:text = "${thisCustomer.getEmail()}"></td>
+                    <td th:text = "${thisCustomer.getAddress()}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<br>
+<!-- Rental Information-->
+<div class="res" th:if="${name != null}">
+    <div class="layui-body">
+
+        <div class="layui-container" style="top: 680px; z-index: -10">
+            <hr class="layui-bg-blue">
+            <h4 style="color: #151515; text-align: center; font-size: xx-large">Rental Records</h4>
+            <hr class="layui-bg-blue">
+            <table class="layui-table ">
+                <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Copy ID</th>
+                    <th>Check Out Date</th>
+                    <th>Expected Return Date</th>
+                    <th>Rent Status</th>
+                </tr>
+                </thead>
+
+                <tr th:each="r:${rentalRecord}" >
+                    <th th:text="${thisCustomer.getName()}"></th>
+                    <td th:text = "${r.getBookCopy().getId()}"></td>
+                    <td th:text = "${r.getCheckOutDate()}"></td>
+                    <td th:text = "${r.getExpectedReturnDate()}"></td>
+                    <td th:text = "${r.getStatus()}"></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="/scripts/jquery.min.js"></script>
+<script src="/layui/layui.js"></script>
+<script>
+
+    layui.use(['carousel', 'element'], function () {
+        let carousel = layui.carousel;
+        let element = layui.element;
+
+        //建造实例
+        carousel.render({
+            elem: '#index'
+            , width: '900' //设置容器宽度
+            , height: '550px' //设置容器高度
+            // , full:'true' //是否全屏轮播,默认false
+            // , arrow: 'always' //始终显示箭头和点击按钮
+            // ,anim: 'updown' //切换动画方式，可从各个方向滚动
+        });
+    });
+
+</script>
+</html>

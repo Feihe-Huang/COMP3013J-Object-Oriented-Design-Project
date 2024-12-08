@@ -1,0 +1,69 @@
+title Return Book - Basic Course of Events
+actor "Librarian " as u
+
+boundary " : View " as v
+entity "model : Model" as m
+boundary "newView : View " as nv
+
+boundary " : DispatchServlet" as d
+
+participant " : CustomerRepository" as cr
+participant " : BookCopyRepository" as bcr
+participant " : BookRentalRepository" as rrr
+
+control " : LibrarySystem" as ls
+control " : LibraryService" as l
+
+
+entity "customer : Customer" as c
+entity "copy : BookCopy" as bc
+
+entity "newRental : RentalRecord" as rr
+
+u->v:click()
+activate v
+v->d:submitReturn(customerId : String, bookCopyId : String, returnDate : String)
+
+deactivate v
+
+activate d
+
+d->ls:addReturn(customerId : String, bookCopyId : String, returnDate : String, model : Model)
+activate ls
+
+ls->l:addReturn(customerId : Long, bookCopyId : Long, returnDate : LocalDate)
+activate l
+
+l->cr:customer := findById(customerId : Long)
+l->bcr: copy := findById(bookCopyId: Long)
+l->rrr:rentalRecord := findByCustomerAndBookCopy(customer : Customer, copy : BookCopy)
+l->bc:setExpectedReturnDate(null : LocalDate)
+l->bc:setAvailability(true : Boolean)
+l->bcr:save(copy : Bookcopy)
+loop once for each BookRental object returned
+l->rr:getRentalStatus()
+	opt if the status of the object is RENTED
+		l->rr:setRentalStatus(RETURNED : RentalStatus)
+		l->rr:setActualReturnDate(returnDate : LocalDate)
+        l->rrr:save(rental: BookRental)
+	end
+    note over l: This is only necessary of a customer can repeat a rental multiple times
+end 
+l-->ls:return customer
+deactivate l
+
+ls->c: rentalRecord := getRentalRecord()
+ls->m:addAttribute(name : String, customer : Customer)
+ls->m:addAttribute(name : String, rentalRecord : BookRental[*])
+
+ls-->d:return viewName
+deactivate ls
+
+d->*nv:View(model : Model)
+activate nv
+
+nv-->d:
+deactivate nv
+
+d-->u: revurn newView
+deactivate d

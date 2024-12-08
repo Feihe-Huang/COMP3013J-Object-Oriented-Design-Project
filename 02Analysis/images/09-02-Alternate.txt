@@ -1,0 +1,20 @@
+title Remove Book Copy - Alternate course of events
+actor Librarian
+control " : ManagementSystem" as ms
+participant " : LibraryManagement" as l
+entity "chosen : Copy" as copy
+
+Librarian->ms:removeCopy(id)
+activate ms
+
+ms-->Librarian:getPermission()
+
+Librarian->ms:confirmRemove()
+
+
+
+
+ms->ms:updateDisplay()
+
+ms-->Librarian:
+deactivate ms

@@ -1,0 +1,67 @@
+title Add Book Copies - Basic Course of Events
+actor "Librarian " as u
+
+boundary " : View " as v
+entity "model : Model" as m
+boundary "newView : View " as nv
+
+boundary " : DispatchServlet" as d
+
+participant " : BookRepository" as br
+participant " : BookCopyRepository" as bcr
+
+control " : LibrarySystem" as ls
+control " : LibraryService" as l
+
+entity "copy : BookCopy" as bc
+entity "book : Book" as b
+
+u->v:click()
+activate v
+v->d:submitCopies(bookId : String, numberCopies : String)
+
+deactivate v
+
+activate d
+
+d->ls:addBookCopies(bookId : String, numberCopies : String, model : Model)
+activate ls
+
+ls->l:addBookCopies(bookId : Long, numberCopies : Integer)
+activate l
+
+l->br:book := findById(bookId : Long)
+
+loop once for each copy to be created
+	l->*bc:BookCopy(book : Book)
+    activate bc
+    bc-->l:
+    deactivate bc
+    l->bc: id := getId()
+    l->b:addCopy(copy : BookCopy)
+    note over l: All ids are added to a list
+end
+
+l-->ls:return idList
+deactivate l
+
+ls->l:book := getBook(bookId : Long)
+activate l
+l->br:b := findById(bookId : Long)
+l-->ls:return b
+deactivate l
+
+ls->m:addAttribute(name : String, book : Book)
+ls->m:addAttribute(name : String, idList : Integer[*])
+
+ls-->d:return viewName
+deactivate ls
+
+d->*nv:View(model : Model)
+activate nv
+
+nv-->d:
+deactivate nv
+
+d-->u: revurn newView
+deactivate d

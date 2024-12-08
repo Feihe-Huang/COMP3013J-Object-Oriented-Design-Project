@@ -1,0 +1,39 @@
+title Rent Book - Basic course of events
+actor Librarian
+control " : ManagementSystem" as bs
+participant " : RentManagement" as r
+participant " : LibraryManagement" as l
+entity "r : Rent" as b
+entity "c : Copy" as c
+
+
+Librarian->bs:rentBook(details)
+activate bs
+
+bs->r:rentBook(details)
+activate r
+
+r->l: c:= searchCopy(copyID)
+
+
+r->c:changeCondition(true)
+activate c
+c-->r:
+deactivate c
+
+r->r:checkRentMax(customerID)
+
+
+r->*b:Rent(customerID, bookCopyID, checkOutDate, returnDate)
+activate b
+b-->r: return rentalDetail
+deactivate b
+
+r-->bs:return rentalDetail
+deactivate r
+
+
+bs->bs:updateDisplay()
+
+bs-->Librarian:
+deactivate bs

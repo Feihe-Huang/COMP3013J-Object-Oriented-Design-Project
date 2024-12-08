@@ -1,0 +1,32 @@
+title Add Book Copy - Basic course of events
+actor Librarian
+control " : ManagementSystem" as ms
+participant " : LibraryManagement" as l
+entity "all : Copy" as c
+
+Librarian->ms:addCopy(details, number)
+activate ms
+
+ms->l:addCopy(details, number)
+activate l
+
+l->l:checkMultiCopies(details, number)
+
+l->l:generateId()
+
+loop for all copies
+	l->c: Copy(title, ISBN, authors, identifier, section, shelf)
+    activate c
+c-->l:
+deactivate c
+end
+
+
+
+l-->ms:
+deactivate l
+
+ms->ms:updateDisplay()
+
+ms-->Librarian:
+deactivate ms

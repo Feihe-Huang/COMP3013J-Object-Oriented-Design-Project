@@ -1,0 +1,23 @@
+title Add Customer - Alternative exist already
+
+actor Librarian
+control " : ManagementSystem" as ms
+participant " : AccountManagement" as l
+
+
+Librarian->ms:addCustomer(details)
+activate ms
+
+ms->l:addCustomer(details)
+activate l
+
+l->l:checkCustomerExist(details)
+
+
+l-->ms:
+deactivate l
+
+ms->ms:updateDisplay()
+
+ms-->Librarian:
+deactivate ms

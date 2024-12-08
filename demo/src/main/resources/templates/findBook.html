@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>view customer</title>
+    <link href="/layui/css/layui.css" rel="stylesheet"/>
+</head>
+<body class="layui-layout-body">
+
+<div class="layui-layout layui-layout-admin">
+
+    <footer th:fragment="header">
+        <div class="layui-header">
+            <div class=" layui-nav " style="font-size: x-large; color: #009688;line-height: 60px;">Library Management</div>
+        </div>
+    </footer>
+
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航 -->
+            <ul class="layui-nav layui-nav-tree">
+
+                <li class="layui-nav-item ">
+                    <a class="" href="javascript:;">Book Management</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/addBookPage">&emsp;&emsp;Add New Book</a></dd>
+                        <dd><a href="/addAuthorPage">&emsp;&emsp;Add New Author</a></dd>
+                        <dd><a href="/addCopyPage">&emsp;&emsp;Add New Copy</a></dd>
+                        <dd><a href="/removeCopyPage">&emsp;&emsp;Remove Copy</a></dd>
+                        <dd><a href="/findBookPage">&emsp;&emsp;Search Book</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;">Customer Management</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/addCustomerPage">&emsp;&emsp;Add New Customer</a></dd>
+                        <dd><a href="/customerDetails">&emsp;&emsp;Search Customer</a></dd>
+                        <dd><a href="/recordPaymentPage">&emsp;&emsp;Record Payment</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item ">
+                    <a class="" href="javascript:;">Rent & Return</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/addRentalPage">&emsp;&emsp;Add Rental</a></dd>
+                        <dd><a href="/returnPage">&emsp;&emsp;Return Book</a></dd>
+                        <dd><a href="/findBookWaitingListPage">&emsp;&emsp;Add Waiting List</a></dd>
+                    </dl>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body layui-container">
+
+        <div class="layui-row">
+            <div class="layui-col-md4"><!--左半部分-->
+
+                <hr class="layui-bg-blue">
+                <h1 style="text-align:left">Search Book</h1>
+                <hr class="layui-bg-blue">
+
+                <form class="layui-form" action="/findBook" method="post">
+
+                    <div class="layui-form-item">
+                        <input placeholder="Enter the book information" class="layui-input" autofocus autocomplete="off" type="text"
+                               name="text" lay-verify="required">
+                    </div>
+
+                    <input class="layui-btn" type="submit" lay-submit="" value="Search">
+                </form>
+            </div>
+
+
+            <div class="layui-col-md7 layui-col-lg-offset1"><!--右半部分-->
+
+                <hr class="layui-bg-blue">
+                <h1 style="text-align: left">Searching Results</h1>
+                <hr class="layui-bg-blue">
+
+                <table class="layui-table" th:if="${bookList != null && bookList.size() != 0}">
+                    <thead>
+                    <tr>
+                        <th>Book ID</th>
+                        <th>Book Title</th>
+                        <th>ISBN</th>
+                        <th>Section</th>
+                        <th>Shelf</th>
+                    </tr>
+                    </thead>
+
+                    <tr th:each="b:${bookList}">
+                        <p th:if="${b != null}">
+                        <td th:text = "${b.getId()}"></td>
+                        <td th:text = "${b.getTitle()}"></td>
+                        <td th:text = "${b.getIsbnNumber()}"></td>
+                        <td th:text = "${b.getSection()}"></td>
+                        <td th:text = "${b.getShelf()}"></td>
+                        </a>
+                        </td>
+                        </p>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<script src="/scripts/jquery.min.js"></script>
+<script src="/layui/layui.js"></script>
+
+<script>
+    layui.use(['form', 'element'], function () {
+        let form = layui.form;
+        let element = layui.element;
+    });
+</script>
+
+</body>
+</html>

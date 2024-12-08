@@ -1,0 +1,62 @@
+title Remove Book Copy - Basic Course of Events
+actor "Librarian " as u
+
+boundary " : View " as v
+entity "model : Model" as m
+boundary "newView : View " as nv
+
+boundary " : DispatchServlet" as d
+
+participant " : BookRepository" as br
+participant " : BookCopyRepository" as bcr
+
+control " : LibrarySystem" as ls
+control " : LibraryService" as l
+
+
+entity "bookCopy : BookCopy" as bc
+entity "book : Book" as b
+
+u->v:click()
+activate v
+v->u:dialog is displayed with confirm and cancel options
+activate u
+u-->v:return true
+deactivate u
+
+v->d:submitCopyRemove(bookCopyId : String)
+
+deactivate v
+
+activate d
+
+d->ls:removeBookCopy(bookCopyId : String, model : Model)
+activate ls
+
+ls->l:removeBookCopy(bookCopyId : Long)
+activate l
+
+l->bcr:bookCopy := findById(bookCopyId : Long)
+
+l->bc:book := getBook()
+
+l->b:removeCopy(bookCopy : BookCopy)
+
+l->bcr:delete(bookCopy : BookCopy)
+destroy bc
+l->br:save(book : Book)
+
+l-->ls:
+deactivate l
+
+ls-->d:return viewName
+deactivate ls
+
+d->*nv:View(model : Model)
+activate nv
+
+nv-->d:
+deactivate nv
+
+d-->u: revurn newView
+deactivate d

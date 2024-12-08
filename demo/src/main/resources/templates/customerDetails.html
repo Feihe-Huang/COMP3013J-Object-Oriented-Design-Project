@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>view customer</title>
+    <link href="/layui/css/layui.css" rel="stylesheet"/>
+</head>
+<body class="layui-layout-body">
+
+<div class="layui-layout layui-layout-admin">
+
+    <footer th:fragment="header">
+        <div class="layui-header">
+            <div class=" layui-nav " style="font-size: x-large; color: #009688;line-height: 60px;">Library Management</div>
+        </div>
+    </footer>
+
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航 -->
+            <ul class="layui-nav layui-nav-tree">
+
+                <li class="layui-nav-item ">
+                    <a class="" href="javascript:;">Book Management</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/addBookPage">&emsp;&emsp;Add New Book</a></dd>
+                        <dd><a href="/addAuthorPage">&emsp;&emsp;Add New Author</a></dd>
+                        <dd><a href="/addCopyPage">&emsp;&emsp;Add New Copy</a></dd>
+                        <dd><a href="/removeCopyPage">&emsp;&emsp;Remove Copy</a></dd>
+                        <dd><a href="/findBookPage">&emsp;&emsp;Search Book</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;">Customer Management</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/addCustomerPage">&emsp;&emsp;Add New Customer</a></dd>
+                        <dd><a href="/customerDetails">&emsp;&emsp;Search Customer</a></dd>
+                        <dd><a href="/recordPaymentPage">&emsp;&emsp;Record Payment</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item ">
+                    <a class="" href="javascript:;">Rent & Return</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/addRentalPage">&emsp;&emsp;Add Rental</a></dd>
+                        <dd><a href="/returnPage">&emsp;&emsp;Return Book</a></dd>
+                        <dd><a href="/findBookWaitingListPage">&emsp;&emsp;Add Waiting List</a></dd>
+                    </dl>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body layui-container">
+
+        <div class="layui-row">
+            <div class="layui-col-md4"><!--左半部分-->
+
+                <hr class="layui-bg-blue">
+                <h1 style="text-align:left">Search Customer</h1>
+                <hr class="layui-bg-blue">
+
+                <form class="layui-form" action="/customerDetailsForm" method="post">
+
+                    <div class="layui-form-item">
+                        <input placeholder="Enter the customer information" class="layui-input" autofocus autocomplete="off" type="text"
+                               name="text" lay-verify="required">
+                    </div>
+
+                    <input class="layui-btn" type="submit" lay-submit="" value="Search">
+                </form>
+            </div>
+
+
+            <div class="layui-col-md7 layui-col-lg-offset1"><!--右半部分-->
+
+                <hr class="layui-bg-blue">
+                <h1 style="text-align: left">Searching Results</h1>
+                <hr class="layui-bg-blue">
+
+                <table class="layui-table" th:if="${name != null && customerList.size() != 0}">
+                    <thead>
+                    <tr >
+                        <th >Customer ID</th>
+                        <th >Customer Name</th>
+                        <th>Customer Email</th>
+                        <th>Customer Address</th>
+                        <th>Operation</th>
+
+                    </tr>
+                    </thead>
+
+                    <tr th:each="c:${customerList}">
+                        <th th:text = "${c.getId()}"></th>
+                        <td th:text = "${c.getName()}"></td>
+                        <td th:text = "${c.getEmail()}"></td>
+                        <th th:text = "${c.getAddress()}"></th>
+                        <td><a th:href = "@{/customerDetails/}+${c.getId()}">
+                            <button class="layui-btn layui-btn-sm layui-btn-checked btn_deleteCategory">
+                                Select
+                            </button>
+                        </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+            <div  th:if="${single!=null}" class="layui-col-md7 layui-col-lg-offset1" style="top: 400px; left: -41%"><!--view部分-->
+
+                <hr class="layui-bg-blue">
+                <h1 style="text-align: left">Customer Details</h1>
+                <hr class="layui-bg-blue">
+
+                <table class="layui-table">
+                    <thead>
+                    <tr >
+                        <th >Customer ID</th>
+                        <th>Customer Name</th>
+                        <th>Customer Email</th>
+                        <th>Customer Address</th>
+                    </tr>
+                    </thead>
+
+                    <tr>
+                        <th th:text = "${thisCustomer.getId()}"></th>
+                        <th th:text = "${thisCustomer.getName()}"></th>
+                        <th th:text = "${thisCustomer.getEmail()}"></th>
+                        <th th:text = "${thisCustomer.getAddress()}"></th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<script src="/scripts/jquery.min.js"></script>
+<script src="/layui/layui.js"></script>
+
+<script>
+    layui.use(['form', 'element'], function () {
+        let form = layui.form;
+        let element = layui.element;
+    });
+</script>
+
+</body>
+</html>

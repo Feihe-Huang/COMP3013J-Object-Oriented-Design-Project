@@ -1,0 +1,94 @@
+title Add To Waiting List - Basic Course of Events
+actor "Librarian " as u
+
+boundary ": View " as v
+entity "model : Model" as m
+boundary "newView : View " as nv
+boundary "newnewView : View " as nnv
+
+boundary ":DispatchServlet" as d
+
+participant " : BookRepository" as br
+participant " : CustomerRepository" as cr
+
+control " : LibrarySystem" as ls
+control " : LibraryService" as l
+
+
+entity "book : Book" as b
+
+== User has already performed the Find Customer Use Case ==
+
+u->v:click()
+activate v
+v->d:selectBook(id : String)
+
+deactivate v
+
+activate d
+
+d->ls:selectBook(id : String, model : Model)
+activate ls
+
+ls->l:getBook(id : Long)
+activate l
+l->br:book := findById(id : Long)
+l-->ls:return book
+deactivate l
+
+ls->b:bookCopies := getCopies()
+ls->m:addAttribute(name : String, book : Book)
+ls->m:addAttribute(name : String, copies : BookCopy[*])
+
+ls-->d:return viewName
+deactivate ls
+
+d->*nv:View(model : Model)
+activate nv
+
+nv-->d:
+deactivate nv
+
+d-->u: return newView
+deactivate d
+
+u->nv:click()
+activate nv
+
+nv->d:addToWaitingList(bookId : String, customerId : String)
+activate d
+deactivate nv
+
+d->ls:addToWaitingList(bookId : String, customerId : String, model : Model)
+
+activate ls
+
+ls->l:addToWaitingList(bookId : Long, customerId : Long)
+activate l
+
+l->br:book := findById(bookId : Long)
+l->cr:customer := findById(customerId : Long)
+
+l->b:addToWaitingList(customer : Customer)
+
+l->br:save(book : Book)
+
+l-->ls:return book
+deactivate l
+
+ls->b:bookCopies := getCopies()
+ls->m:addAttribute(name : String, book : Book)
+ls->m:addAttribute(name : String, copies : BookCopy[*])
+ls->m:addAttribute(name : String, waitingList : Customer[*])
+
+ls-->d:return viewName
+deactivate ls
+
+d->*nnv:View(model : Model)
+activate nnv
+
+nnv-->d:
+deactivate nnv
+
+d-->u: return newnewView
+deactivate d

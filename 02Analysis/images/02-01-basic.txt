@@ -1,0 +1,26 @@
+title Add Book - Basic course of events
+actor Librarian
+control " : ManagementSystem" as ms
+participant " : LibraryManagement" as l
+entity ": Book" as b
+
+Librarian->ms:addBook(details)
+activate ms
+
+ms->l:addBook(details)
+activate l
+
+l->l:checkBookExist(details)
+l->*b:Book(title, authors, ISBN number)
+
+activate b
+b-->l:
+deactivate b
+
+l-->ms:
+deactivate l
+
+ms->ms:updateDisplay()
+
+ms-->Librarian:
+deactivate ms

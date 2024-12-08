@@ -1,0 +1,35 @@
+title Record Payment - Basic course of events
+actor Librarian
+control " : Management System" as bs
+participant " : Rent Management" as r
+participant " : Account Management" as l
+entity " c : Customer" as c
+
+
+Librarian->bs:updateLateFee(amount)
+activate bs
+
+bs->r:updateLateFee(amount)
+activate r
+
+
+r->l:searchCustomer(details)
+activate l
+
+l-->r: c:= Customer
+deactivate l
+
+r->c:updateLateFee(amount)
+activate c
+c-->r: return details
+deactivate c
+
+
+r-->bs:
+deactivate r
+
+
+bs->bs:updateDisplay()
+
+bs-->Librarian:
+deactivate bs

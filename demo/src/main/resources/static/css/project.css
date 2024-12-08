@@ -1,0 +1,26 @@
+.res{
+    position: absolute;
+    left: 700px;
+}
+
+.success{
+    color: #9fec9f;
+}
+
+.show{
+    top: 680px;
+}
+
+.resOne{
+    position: relative;
+    left: 700px;
+    top: 1300px;
+}
+
+.img{
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+    object-fit: cover;
+    opacity: 0.9;
+}

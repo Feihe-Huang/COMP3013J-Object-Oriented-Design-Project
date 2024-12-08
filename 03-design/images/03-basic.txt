@@ -1,0 +1,61 @@
+title Add Customer - Basic Course of Events
+actor "Librarian " as u
+
+boundary ": View " as v
+entity "model : Model" as m
+boundary "newView : View " as nv
+boundary ":DispatchServlet" as d
+
+participant " : CustomerRepository" as cr
+
+control " : LibrarySystem" as ls
+control " : LibraryService" as l
+
+
+entity "c : Customer" as c
+
+
+u->v:click()
+activate v
+v->d:submitBook(name : String, dateOfBirth : String, email : String, address : String, maxRentals: String)
+
+deactivate v
+
+activate d
+
+d->ls:addCustomer(name : String, dateOfBirth : String, email : String, address : String, maxRentals: String, model : Model)
+activate ls
+
+ls->l:getCustomer(name : String, dateOfBirth : LocalDate, email : String, address : String, maxRentals: Integer)
+activate l
+l->cr:c := findByEmail(email : String)
+
+opt if c is null
+  l->*c:Customer(name : String, dateOfBirth : LocalDate, email : String, address : String, maxRentals: Integer)
+  activate c
+  
+  c-->l:
+  deactivate c
+  l->cr:save(c : Customer)
+end
+
+l-->ls:return c
+deactivate l
+
+ls->c:rr := getRentalRecord()
+
+ls->m:addAttribute(name : String, c : Customer)
+ls->m:addAttribute(name : String, rr : BookRental[*])
+
+
+ls-->d:return viewName
+deactivate ls
+
+d->*nv:View(model : Model)
+activate nv
+
+nv-->d:
+deactivate nv
+
+d-->u: revurn newView
+deactivate d

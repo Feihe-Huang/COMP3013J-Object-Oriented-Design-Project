@@ -1,0 +1,56 @@
+title Return Book - Alternative course of events
+actor Librarian
+control " : ManagementSystem" as Ms
+participant " : RentManagement" as r
+participant " : AccountManagement" as Am
+participant " : LibraryManagement" as Lm
+entity "r : Rent" as b
+entity "co : Copy" as co
+entity "c : Costumer" as c
+
+
+
+Librarian->Ms:returnBook(details)
+activate Ms
+
+
+// modify deleteRent()
+Ms->r:deleteRent(details)
+activate r
+
+r->Am:c: = searchCustomer(customerID)
+
+
+r->Lm: co: = searchCopy(copyID)
+
+
+r->r: r:= searchRent(customerID, copyID)
+
+r->b:returnBook( )
+activate b
+b-->r:
+deactivate b
+
+r->co: changeCondition(false)
+activate co
+co-->r:
+deactivate co
+
+
+
+r->r:check isLate()
+
+
+r->c:updateLateFee(extraFee)
+activate c
+
+c-->r:
+deactivate c
+
+r-->Ms:return customerAccount, \nrentalDetails, extraFee
+deactivate r
+
+Ms->Ms:updateDisplay()
+
+Ms-->Librarian:
+deactivate Ms

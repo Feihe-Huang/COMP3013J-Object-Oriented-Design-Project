@@ -1,0 +1,13 @@
+#direction: right
+[Book|title;isbnNumber;section;shelf]
+[Author|name]
+[Customer|name;email;address;dateOfBirth;maxRentals;lateFees]
+[BookCopy|id]
+[BookRental|checkOutDate; returnDate; lateFees]
+
+[Book]->*[Author]
+[Author]->*[Book]
+[BookCopy]->1[Book]
+[Customer]->*[BookRental]
+[BookRental]->1[BookCopy]
+[Book]->*[Customer]

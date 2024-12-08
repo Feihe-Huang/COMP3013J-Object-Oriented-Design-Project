@@ -1,0 +1,57 @@
+title Add Author - Basic Course of Events
+actor "Librarian " as u
+
+boundary ": View " as v
+boundary "newView : View " as nv
+boundary ":DispatchServlet" as d
+
+participant " : AuthorRepository" as ar
+
+control " : LibrarySystem" as ls
+
+control " : LibraryService" as l
+
+
+
+entity ": Author" as a
+
+
+u->v:click()
+activate v
+v->d:submitAuthor(name : String)
+
+deactivate v
+
+activate d
+
+d->ls:addAuthor(name: String, model : Model)
+activate ls
+
+ls->l:getAuthor(name : String)
+activate l
+l->ar:a := findByName(name : String)
+opt if a is null
+l->*a:Author(name : String)
+activate a
+
+a-->l:
+deactivate a
+l->ar:save(a : Author)
+end 
+
+l-->ls:
+deactivate l
+
+
+
+ls-->d:return viewName
+deactivate ls
+
+d->*nv:View(model : Model)
+activate nv
+
+nv-->d:
+deactivate nv
+
+d-->u: revurn newView
+deactivate d

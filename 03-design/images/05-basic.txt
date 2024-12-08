@@ -1,0 +1,70 @@
+title Add Rental - Basic Course of Events
+actor "Librarian " as u
+
+boundary " : View " as v
+entity "model : Model" as m
+boundary "newView : View " as nv
+
+boundary " : DispatchServlet" as d
+
+participant " : CustomerRepository" as cr
+participant " : BookCopyRepository" as bcr
+participant " : BookRentalRepository" as rrr
+
+control " : LibrarySystem" as ls
+control " : LibraryService" as l
+
+
+entity "customer : Customer" as c
+entity "copy : BookCopy" as bc
+
+entity "newRental : RentalRecord" as rr
+
+u->v:click()
+activate v
+v->d:submitRental(customerId : String, bookCopyId : String, checkOutDate : String, returnDate : String)
+
+deactivate v
+
+activate d
+
+d->ls:addRental(customerId : String, bookCopyId : String, checkOutDate : String, returnDate : String, model : Model)
+activate ls
+
+ls->l:addRental(customerId : Long, bookCopyId : Long, checkOutDate : LocalDate, returnDate : LocalDate)
+activate l
+
+
+l->cr:customer := findById(customerId : Long)
+l->bcr:copy := findById(cookCopyId : Long)
+
+l->bc:setExpectedReturnDate(returnDate : LocalDate)
+l->bc:setAvailable(false : Boolean)
+
+l->bcr:save(copy : BookCopy)
+
+l->*rr:BookRental(customer: Customer, copy : BookCopy,checkOutDate : LocalDate, returnDate : LocalDate)
+activate rr
+
+rr-->l:
+deactivate rr
+l->rrr:save(newRental : BookRental)
+
+l-->ls:return customer
+deactivate l
+
+ls->c: rentalRecord := getRentalRecord()
+ls->m:addAttribute(name : String, customer : Customer)
+ls->m:addAttribute(name : String, rentalRecord : BookRental[*])
+
+ls-->d:return viewName
+deactivate ls
+
+d->*nv:View(model : Model)
+activate nv
+
+nv-->d:
+deactivate nv
+
+d-->u: revurn newView
+deactivate d

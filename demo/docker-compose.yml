@@ -1,0 +1,43 @@
+version: "3.7"
+services:
+  library:
+    build: .
+    ports:
+      - "8083:8083"
+    restart: always
+    depends_on:
+      - library_db
+    networks:
+      net:
+        ipv4_address: 172.1.1.2
+
+  library_db:
+    image: "mysql:8.0"
+    restart: always
+    volumes:
+      - mysql-data2:/var/lib/mysql
+      - ./init_ood.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_DATABASE: ood
+      MYSQL_USER: user
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: Lym20020509
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    networks:
+      net:
+        ipv4_address: 172.1.1.3
+
+volumes:
+  mysql-data2:
+
+networks:
+  net:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.1.1.0/24

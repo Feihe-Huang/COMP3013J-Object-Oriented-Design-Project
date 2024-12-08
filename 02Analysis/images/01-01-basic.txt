@@ -1,0 +1,26 @@
+title Add Author - Basic course of events
+actor Librarian
+control " : ManagementSystem" as ms
+participant " : LibraryManagement" as l
+entity ": Author" as au
+
+Librarian->ms:addAuthor(name)
+activate ms
+
+ms->l:addAuthor(name)
+activate l
+
+l->l:checkAuthorExist(name)
+l->*au:Author(name)
+
+activate au
+au-->l:
+deactivate au
+
+l-->ms:
+deactivate l
+
+ms->ms:updateDisplay()
+
+ms-->Librarian:
+deactivate ms

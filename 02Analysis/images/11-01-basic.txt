@@ -1,0 +1,35 @@
+title Add To Waiting List - Basic course of events
+actor Librarian
+control " : Management System" as bs
+participant " : Rent Management" as r
+participant " : Library Management" as l
+entity " b : Book" as b
+
+
+Librarian->bs:addWaitingList(details)
+activate bs
+
+bs->r:addWaitingList(details)
+activate r
+
+
+r->l:searchBook(bookTitle)
+activate l
+l-->r: b:= Book
+deactivate l
+
+
+r->b: addWaiter(customerID)
+activate b
+b-->r:
+deactivate b
+
+
+r-->bs:
+deactivate r
+
+
+bs->bs:updateDisplay()
+
+bs-->Librarian:
+deactivate bs

@@ -1,0 +1,21 @@
+title Rent Book - Alternative course of events
+actor Librarian
+control " : Management System" as bs
+participant " : Rent Management" as r
+
+Librarian->bs:rentBook(details)
+activate bs
+
+bs->r:rentBook(details)
+activate r
+
+r->r:checkRentMax(customerID)
+
+r-->bs:
+
+deactivate r
+
+bs->bs:updateDisplay()
+
+bs-->Librarian:
+deactivate bs

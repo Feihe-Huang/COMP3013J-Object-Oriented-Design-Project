@@ -1,0 +1,65 @@
+title Find Customer - Basic Course of Events
+actor "Librarian " as u
+
+boundary ": View " as v
+entity "model : Model" as m
+boundary "newView : View " as nv
+
+boundary ":DispatchServlet" as d
+
+participant " : BookRepository" as br
+participant " : AuthorRepository" as ar
+
+control " : LibrarySystem" as ls
+control " : LibraryService" as l
+
+
+entity "c : Customer" as c
+
+
+u->v:click()
+activate v
+v->d:submitBookSearch(text : String)
+
+deactivate v
+
+activate d
+
+d->ls:findBook(text : String, model : Model)
+activate ls
+
+ls->l:findBook(text : String)
+activate l
+
+opt if the text contains a number
+	l->br:book := findById(id : Long)
+end
+
+l->br:book := findByIsbnNumber(text : String)
+
+
+l->br:books := findAllByTitle(text : String)
+
+l->ar:author := findByName(text : String)
+l->br: books := findByAuthor(author : Author)
+
+note over l: All returned book objects added to a single list
+
+
+l-->ls:return bookList
+deactivate l
+
+ls->m:addAttribute(name : String, bookList : Book[*])
+
+
+ls-->d:return viewName
+deactivate ls
+
+d->*nv:View(model : Model)
+activate nv
+
+nv-->d:
+deactivate nv
+
+d-->u: revurn newView
+deactivate d

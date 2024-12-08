@@ -1,0 +1,20 @@
+title Add Book - Alternate exist already
+actor Librarian
+control " : ManagementSystem" as ms
+participant " : LibraryManagement" as l
+
+Librarian->ms:addBook(details)
+activate ms
+
+ms->l:addBook(details)
+activate l
+
+l->l:checkBookExist(details)
+
+l-->ms:
+deactivate l
+
+ms->ms:updateDisplay()
+
+ms-->Librarian:
+deactivate ms
